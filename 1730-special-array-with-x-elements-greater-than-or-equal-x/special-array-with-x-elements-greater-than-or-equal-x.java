@@ -1,21 +1,16 @@
 class Solution {
     public int specialArray(int[] nums) {
-        Arrays.sort(nums);
-        TreeMap<Integer, Integer> m = new TreeMap<>();
-        for (int i = 0; i < nums.length; i++) {
-            if (m.containsKey(nums[i])) continue;
-            m.put(nums[i], i);
+        int n = nums.length;
+        int[] bucket = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            bucket[Math.min(n, nums[i])]++; // Any number > n can be treated as n which will allow us to use bucket sort
         }
-        int l = 0, r = nums[nums.length - 1];
-        while (l <= r) {
-            int mid = (l + r) / 2;
-            int greaterElements = nums.length - m.get(m.ceilingKey(mid));
-            if (greaterElements == mid) {
-                return mid;
-            } else if (greaterElements > mid) {
-                l = mid + 1;
-            } else {
-                r = mid - 1;
+
+        int greaterOrEqual = 0;
+        for (int i = n; i >= 0; i--) {
+            greaterOrEqual += bucket[i];
+            if (i == greaterOrEqual) {
+                return i;
             }
         }
         return -1;
