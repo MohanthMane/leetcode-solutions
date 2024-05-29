@@ -1,33 +1,36 @@
 class Solution {
     public int numSteps(String s) {
-        int l = s.length() - 1;
-        int carry = 0;
-        int count = 0;
-        
-        while (l > 0) {
-            // even number with carry = 0, result even
-            if (Character.getNumericValue(s.charAt(l)) + carry == 0) {
-                carry = 0;
-                count++;
-            // odd number with carry = 1, result even
-            } else if (Character.getNumericValue(s.charAt(l)) + carry == 2) {
-                carry = 1;
-                count++;
-            // even number with carry = 1, result odd
-            // odd number with carry = 0, result odd
+        int n = s.length();
+        if (s.isBlank() || s.isEmpty()) return 0;
+        if (s.length() == 1 && s.charAt(0) == '1') return 0;
+        if (s.charAt(n - 1) == '0') {
+            return 1 + numSteps(divideByTwo(s));
+        } else {
+            return 1 + numSteps(addOne(s));
+        }
+    }
+
+    private String addOne(String s) {
+        StringBuilder sb = new StringBuilder(s);
+        int i = sb.length() - 1;
+
+        while (i >= 0) {
+            if (sb.charAt(i) == '0') {
+                sb.setCharAt(i, '1');
+                break;
             } else {
-                carry = 1;
-                count += 2;
+                sb.setCharAt(i, '0');
             }
-            l--;
+            i--;
         }
-        
-        // last digit 1 needs to add a carried over digit 1, which gives 10.
-        // So need one more divide to make it 1 (one more step)
-        if (carry == 1) {
-            count++;
+
+        if (i < 0) {
+            sb.insert(0, '1');
         }
-        
-        return count;
+        return sb.toString();
+    }
+
+    private String divideByTwo(String s) {
+        return s.substring(0, s.length() - 1);
     }
 }
