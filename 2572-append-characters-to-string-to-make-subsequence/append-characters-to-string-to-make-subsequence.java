@@ -1,16 +1,12 @@
 class Solution {
     public int appendCharacters(String s, String t) {
-        int sIndex = 0, tIndex = 0;
-        int sLength = s.length(), tLength = t.length();
-        
-        while (sIndex < sLength && tIndex < tLength) {
+        int tIndex = 0, sIndex = 0;
+        while (tIndex < t.length() && sIndex < s.length()) {
             if (s.charAt(sIndex) == t.charAt(tIndex)) {
                 tIndex++;
             }
             sIndex++;
         }
-        
-        return tLength - tIndex;
-        
+        return t.length() - tIndex;
     }
 }
