@@ -1,15 +1,19 @@
 class Solution {
     public int minIncrementForUnique(int[] nums) {
-        Arrays.sort(nums);
-        Set<Integer> s = new HashSet<>();
-        int result = 0;
+        int max = Arrays.stream(nums).max().orElse(0);
+        int[] count = new int[nums.length + max + 1];
         for (int i = 0; i < nums.length; i++) {
-            while (s.contains(nums[i])) {
-                int destination = nums[i - 1] + 1;
-                result = result + (destination - nums[i]);
-                nums[i] = destination;
+            count[nums[i]]++;
+        }
+        
+        int result = 0;
+        for (int i = 0; i < count.length - 1; i++) {
+            if (count[i] > 1) {
+                int duplicates = count[i] - 1;
+                result += duplicates;
+                count[i] = 1;
+                count[i + 1] += duplicates;
             }
-            s.add(nums[i]);
         }
         return result;
     }
