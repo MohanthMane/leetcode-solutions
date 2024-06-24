@@ -1,23 +1,22 @@
 class Solution {
     public int numberOfSubarrays(int[] nums, int k) {
-        return subArraysWithAtMostKOdd(nums, k) - subArraysWithAtMostKOdd(nums, k - 1);
-    }
-
-    public int subArraysWithAtMostKOdd(int[] nums, int k) {
-        int oddCount = 0, result = 0;
-        int start = 0;
-        for (int end = 0; end < nums.length; end++) {
-            if (nums[end] % 2 == 1) {
-                oddCount++;
-            }
-            while (oddCount > k) {
-                if (nums[start] % 2 == 1) {
-                    oddCount--;
-                }
-                start++;
-            }
-            result += end - start + 1;
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] %= 2;
         }
-        return result;
+        
+        int[] prefixCount = new int[nums.length + 1];
+        prefixCount[0] = 1;
+        int s = 0;
+        int ans = 0;
+        
+        for (int num : nums) {
+            s += num;
+            if (s >= k) {
+                ans += prefixCount[s - k];
+            }
+            prefixCount[s]++;
+        }
+        
+        return ans;
     }
 }
