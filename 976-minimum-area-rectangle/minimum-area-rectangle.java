@@ -1,23 +1,26 @@
 class Solution {
     public int minAreaRect(int[][] points) {
-        Map<Integer, Set<Integer>> map = new HashMap<>();
-        for (int[] p : points) {
-            if (!map.containsKey(p[0])) {
-                map.put(p[0], new HashSet<>());
+        Map<Integer, Set<Integer>> xToYMap = new HashMap<>();
+        for (int[] point: points) {
+            int x = point[0], y = point[1];
+            if (!xToYMap.containsKey(x)) {
+                xToYMap.put(x, new HashSet<>());
             }
-            map.get(p[0]).add(p[1]);
+            xToYMap.get(x).add(y);
         }
-        int min = Integer.MAX_VALUE;
-        for (int[] p1 : points) {
-            for (int[] p2 : points) {
-                if (p1[0] == p2[0] || p1[1] == p2[1]) { // if have the same x or y
-                    continue;
-                }
-                if (map.get(p1[0]).contains(p2[1]) && map.get(p2[0]).contains(p1[1])) { // find other two points
-                    min = Math.min(min, Math.abs(p1[0] - p2[0]) * Math.abs(p1[1] - p2[1]));
+
+        int minArea = Integer.MAX_VALUE;
+        for (int i = 0; i < points.length; i++) {
+            for (int j = 0; j < points.length; j++) {
+                int p1x = points[i][0], p1y = points[i][1];
+                int p2x = points[j][0], p2y = points[j][1];
+
+                if (p1x == p2x || p1y == p2y) continue;
+                if (xToYMap.get(p1x).contains(p2y) && xToYMap.get(p2x).contains(p1y)) {
+                    minArea = Math.min(minArea, Math.abs(p1x - p2x) * Math.abs(p1y - p2y));
                 }
             }
         }
-        return min == Integer.MAX_VALUE ? 0 : min;
+        return minArea == Integer.MAX_VALUE ? 0 : minArea;
     }
 }
