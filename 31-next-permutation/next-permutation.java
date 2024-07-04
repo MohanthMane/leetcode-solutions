@@ -14,7 +14,7 @@ class Solution {
             while (nums[j] <= nums[pivot]) j--;
             swap(nums, pivot, j);
         }
-        reverse(nums, pivot + 1);
+        Arrays.sort(nums, pivot + 1, n);
     }
 
     private void reverse(int[] nums, int start) {
