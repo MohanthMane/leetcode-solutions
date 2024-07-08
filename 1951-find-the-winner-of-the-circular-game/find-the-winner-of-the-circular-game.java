@@ -1,6 +1,10 @@
 class Solution {
     public int findTheWinner(int n, int k) {
-        return helper(n, k) + 1;
+        int result = 0;
+        for (int i = 2; i <= n; i++) {
+            result = (result + k) % i;
+        }
+        return result + 1;
     }
 
     private int helper(int n, int k) {
