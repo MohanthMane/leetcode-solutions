@@ -1,0 +1,16 @@
+class Solution {
+    public double averageWaitingTime(int[][] customers) {
+        int[] waitTimes = new int[customers.length];
+        int time = 0;
+        long sum = 0;
+        for (int i = 0; i < customers.length; i++) {
+            if (time >= customers[i][0]) {
+                time += customers[i][1];
+            } else {
+                time = customers[i][0] + customers[i][1];
+            }
+            sum += time - customers[i][0];
+        }
+        return ((double) sum) / waitTimes.length;
+    }
+}
