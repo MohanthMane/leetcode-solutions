@@ -3,66 +3,63 @@ import java.util.*;
 class Solution {
     public int[] smallestSufficientTeam(String[] req_skills, List<List<String>> people) {
         int n = req_skills.length;
-        int m = people.size();
-        
-        // Map each skill to an index
-        Map<String, Integer> skillIndex = new HashMap<>();
+        Map<String, Integer> skillsMap = new HashMap<>();
         for (int i = 0; i < n; i++) {
-            skillIndex.put(req_skills[i], i);
+            skillsMap.put(req_skills[i], i);
         }
-        
-        // Create a bitmask for each person
-        int[] personSkills = new int[m];
-        for (int i = 0; i < m; i++) {
-            int bitmask = 0;
+
+        List<Set<Integer>> skillsPeopleTable = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            skillsPeopleTable.add(new HashSet<>());
+        }
+
+        for (int i = 0; i < people.size(); i++) {
             for (String skill : people.get(i)) {
-                bitmask |= 1 << skillIndex.get(skill);
-            }
-            personSkills[i] = bitmask;
-        }
-        
-        // BFS setup
-        Queue<State> queue = new LinkedList<>();
-        Map<Integer, List<Integer>> visited = new HashMap<>();
-        int fullSkillSet = (1 << n) - 1;
-        
-        queue.offer(new State(0, new ArrayList<>()));
-        visited.put(0, new ArrayList<>());
-        
-        // BFS loop
-        while (!queue.isEmpty()) {
-            State current = queue.poll();
-            int currentSkills = current.skills;
-            List<Integer> currentTeam = current.team;
-            
-            if (currentSkills == fullSkillSet) {
-                int[] result = new int[currentTeam.size()];
-                for (int i = 0; i < currentTeam.size(); i++) {
-                    result[i] = currentTeam.get(i);
-                }
-                return result;
-            }
-            
-            for (int i = 0; i < m; i++) {
-                int newSkills = currentSkills | personSkills[i];
-                if (!visited.containsKey(newSkills) || visited.get(newSkills).size() > currentTeam.size() + 1) {
-                    List<Integer> newTeam = new ArrayList<>(currentTeam);
-                    newTeam.add(i);
-                    queue.offer(new State(newSkills, newTeam));
-                    visited.put(newSkills, newTeam);
-                }
+                int skillIndex = skillsMap.get(skill);
+                skillsPeopleTable.get(skillIndex).add(i);
             }
         }
-        
-        return new int[0];  // Should not reach here
+
+        Queue<Pair> q = new LinkedList<>();
+        q.add(new Pair(skillsPeopleTable, new ArrayList<>()));
+
+        while (!q.isEmpty()) {
+            Pair curr = q.poll();
+            List<Set<Integer>> currTable = curr.table;
+            List<Integer> currTeam = curr.team;
+
+            Set<Integer> rareSkillPeopleSet = Collections.min(currTable, Comparator.comparingInt(Set::size));
+
+            for (int person : rareSkillPeopleSet) {
+                List<Set<Integer>> nextTable = new ArrayList<>();
+                for (Set<Integer> skillPeopleSet : currTable) {
+                    if (!skillPeopleSet.contains(person)) {
+                        nextTable.add(skillPeopleSet);
+                    }
+                }
+                if (nextTable.isEmpty()) {
+                    int[] result = new int[currTeam.size() + 1];
+                    for (int i = 0; i < currTeam.size(); i++) {
+                        result[i] = currTeam.get(i);
+                    }
+                    result[currTeam.size()] = person;
+                    return result;
+                }
+                List<Integer> nextTeam = new ArrayList<>(currTeam);
+                nextTeam.add(person);
+                q.add(new Pair(nextTable, nextTeam));
+            }
+        }
+
+        return new int[0]; // Should not reach here
     }
-    
-    class State {
-        int skills;
+
+    class Pair {
+        List<Set<Integer>> table;
         List<Integer> team;
-        
-        State(int skills, List<Integer> team) {
-            this.skills = skills;
+
+        Pair(List<Set<Integer>> table, List<Integer> team) {
+            this.table = table;
             this.team = team;
         }
     }
