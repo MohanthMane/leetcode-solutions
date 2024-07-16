@@ -48,10 +48,11 @@ class DSU {
 
 class Solution {
     public boolean validTree(int n, int[][] edges) {
+        if (edges.length != n - 1) return false;
         DSU dsu = new DSU(n);
         for (int[] edge : edges) {
             dsu.union(edge[0], edge[1]);
         }
-        return dsu.components == 1 && edges.length == n - 1;
+        return dsu.components == 1;
     }
 }
