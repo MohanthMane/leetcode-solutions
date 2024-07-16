@@ -1,11 +1,11 @@
 class Solution {
     public String removeDuplicates(String s) {
-        List<Character> stack = new ArrayList<>();
+        List<Character> stack = new LinkedList<>();
         for (char c: s.toCharArray()) {
             if (stack.isEmpty() || stack.getLast() != c) {
-                stack.add(c);
+                stack.addLast(c);
             } else {
-                stack.remove(stack.size() - 1);
+                stack.removeLast();
             }
         }
         return stack.stream()
