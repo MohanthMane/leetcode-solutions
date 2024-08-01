@@ -1,4 +1,5 @@
 class Solution {
+    // OneNote
     public int numTeams(int[] rating) {
         int increasingTeams = 0, n = rating.length;
         int[] leftSmaller = new int[n];
