@@ -1,5 +1,6 @@
 class Solution {
-
+    /** https://1drv.ms/o/c/fa8bda5730e54812/EptbztzsDQFDjRq4WLGV-XQBkqy5HclItPq5JTFElkC43Q
+     */
     public int maxScore(int[] cardPoints, int k) {
         int[] workingSet = new int[k + k];
         int n = cardPoints.length, idx = 0;
