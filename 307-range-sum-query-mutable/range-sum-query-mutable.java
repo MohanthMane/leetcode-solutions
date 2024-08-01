@@ -1,59 +1,44 @@
 class NumArray {
 
-    private int[] tree;
+    private int[] fenwick;
+    private int[] nums;
     private int n;
 
+    // Striver video on fenwick trees
     public NumArray(int[] nums) {
         this.n = nums.length;
-        this.tree = new int[4 * n];
-        buildTree(nums, 0, n - 1, 1);
-    }
-
-    private void buildTree(int[] nums, int l, int r, int root) {
-        if (l == r) {
-            tree[root] = nums[l];
-        } else {
-            int mid = (l + r) / 2;
-            buildTree(nums, l, mid, 2 * root);
-            buildTree(nums, mid + 1, r, 2 * root + 1);
-            tree[root] = tree[2 * root] + tree[2 * root + 1];
+        this.nums = nums;
+        this.fenwick = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            updateFenwick(i, nums[i]);
         }
     }
 
-    private void updateTree(int l, int r, int root, int index, int newValue) {
-        if (l == r) {
-            tree[root] = newValue;
-        } else {
-            int mid = (l + r) / 2;
-            if (index <= mid) {
-                updateTree(l, mid, 2 * root, index, newValue);
-            } else {
-                updateTree(mid + 1, r, 2 * root + 1, index, newValue);
-            }
-            tree[root] = tree[2 * root] + tree[2 * root + 1];
+    private void updateFenwick(int index, int val) {
+        int i = index + 1;
+        while (i <= n) {
+            fenwick[i] += val;
+            i = i + (i & -i); // 2's complement, AND with self, Add with self
         }
     }
 
-    private int getSum(int start, int end, int root, int l, int r) {
-        if (start > r || end < l) return 0;
-        if (l >= start && r <= end) return tree[root];
-
-        int mid = (l + r) / 2;
-        return getSum(start, end, 2 * root, l, mid) + getSum(start, end, 2 * root + 1, mid + 1, r);
+    private int getSum(int end) {
+        int i = end + 1;
+        int sum = 0;
+        while (i > 0) {
+            sum += fenwick[i];
+            i = i - (i & -i);
+        }
+        return sum;
     }
     
     public void update(int index, int val) {
-        updateTree(0, n - 1, 1, index, val);
+        int diff = val - nums[index];
+        nums[index] = val;
+        updateFenwick(index, diff);
     }
     
     public int sumRange(int left, int right) {
-        return getSum(left, right, 1, 0, n - 1);
+        return getSum(right) - getSum(left - 1);
     }
 }
-
-/**
- * Your NumArray object will be instantiated and called as such:
- * NumArray obj = new NumArray(nums);
- * obj.update(index,val);
- * int param_2 = obj.sumRange(left,right);
- */
