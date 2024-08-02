@@ -1,4 +1,5 @@
 class Solution {
+    // OneNote
     public int minimumDeletions(String s) {
         int n = s.length();
         int[] bCountToLeft = new int[n];
