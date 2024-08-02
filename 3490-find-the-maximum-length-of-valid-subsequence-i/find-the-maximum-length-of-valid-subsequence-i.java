@@ -15,8 +15,6 @@ class Solution {
                 parity = 1 - parity;
             }
         }
-        int allOdds = oddCount;
-        int allEven = evenCount;
-        return Math.max(oddEven, Math.max(allOdds, allEven));
+        return Math.max(oddEven, Math.max(oddCount, evenCount));
     }
 }
