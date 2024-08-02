@@ -16,7 +16,7 @@ class Solution {
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                if (board[i][j] <= -1) {
+                if (board[i][j] <= 0) {
                     board[i][j] = 0;
                 } else if (board[i][j] > 0) {
                     board[i][j] = 1;
