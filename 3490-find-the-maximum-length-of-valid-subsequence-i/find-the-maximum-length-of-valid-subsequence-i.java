@@ -1,5 +1,5 @@
 // odd + odd and even + even
-// odd + even
+// odd + even and even + odd
 class Solution {
     public int maximumLength(int[] nums) {
         int oddCount = 0, evenCount = 0;
