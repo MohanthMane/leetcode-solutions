@@ -26,8 +26,10 @@ class DSU {
     }
 
     public int find(int x) {
-        if (parents[x] == x) return x;
-        return find(parents[x]);
+        if (parents[x] != x) {
+            parents[x] = find(parents[x]);
+        }
+        return parents[x];
     }
 
     public boolean union(int x, int y) {
