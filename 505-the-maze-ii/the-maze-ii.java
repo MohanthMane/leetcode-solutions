@@ -1,15 +1,13 @@
 class Solution {
     public int shortestDistance(int[][] maze, int[] start, int[] destination) {
         int n = maze.length, m = maze[0].length;
-        Set<String> seen = new HashSet<>();
         int[][] directions = new int[][] {
             {0, 1}, {0, -1}, {1, 0}, {-1, 0}
         };
 
         Map<String, Integer> distances = new HashMap<>();
-        Queue<int[]> queue = new LinkedList<>();
+        Queue<int[]> queue = new PriorityQueue<>(Comparator.comparing(a -> a[2]));
         queue.offer(new int[]{start[0], start[1], 0});
-        seen.add(getHash(start));
 
         while (!queue.isEmpty()) {
             int[] current = queue.poll();
