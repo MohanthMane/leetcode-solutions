@@ -15,14 +15,13 @@ class Solution {
         int result = 0;
         for (int r1 = 0; r1 < rows; r1++) {
             for (int r2 = r1; r2 < rows; r2++) {
-                for (int c1 = 0; c1 < cols; c1++) {
-                    for (int c2 = c1; c2 < cols; c2++) {
-                        int top = (r1 > 0) ? ps[r1 - 1][c2] : 0;
-                        int left = (c1 > 0) ? ps[r2][c1 - 1] : 0;
-                        int topLeft = (Math.min(r1, c1) > 0) ? ps[r1 - 1][c1 - 1] : 0;
-                        int sum = ps[r2][c2] - top - left + topLeft;
-                        if (sum == target) result++;
-                    }
+                Map<Integer, Integer> countMap = new HashMap<>();
+                countMap.put(0, 1);
+                for (int c = 0; c < cols; c++) {
+                    int top = (r1 > 0) ? ps[r1 - 1][c] : 0;
+                    int sum = ps[r2][c] - top;
+                    result += countMap.getOrDefault(sum - target, 0);
+                    countMap.put(sum, countMap.getOrDefault(sum, 0) + 1);
                 }
             }
         }
