@@ -21,12 +21,9 @@ class Solution {
         }
 
         color[node] = currentColor;
-        for (int nei : graph[node]) {
-            if (!dfs(graph, color, nei, currentColor ^ 1)) {
-                return false;
-            }
+        for (int neighbor: graph[node]) {
+            if (!dfs(graph, color, neighbor, currentColor ^ 1)) return false;
         }
-
         return true;
     }
 }
