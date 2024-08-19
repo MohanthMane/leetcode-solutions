@@ -16,7 +16,6 @@ class Solution {
             if (remaining > 0) {
                 remaining--;
             } else {
-                System.out.println("I'm here");
                 remaining = 7;
                 presses++;
             }
