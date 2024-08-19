@@ -2,6 +2,7 @@ class Solution {
 
     private int timer = 0;
 
+    // Striver video
     public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
         List<List<Integer>> bridges = new ArrayList<>();
         Map<Integer, List<Integer>> graph = new HashMap<>();
