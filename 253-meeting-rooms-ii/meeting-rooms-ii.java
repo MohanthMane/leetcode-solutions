@@ -1,14 +1,14 @@
 class Solution {
     public int minMeetingRooms(int[][] intervals) {
-        TreeMap<Integer, Integer> line = new TreeMap<>();
+        int[] line = new int[1000002];
         for (int[] interval: intervals) {
-            line.put(interval[0], line.getOrDefault(interval[0], 0) + 1);
-            line.put(interval[1], line.getOrDefault(interval[1], 0) - 1);
+            line[interval[0]]++;
+            line[interval[1]]--;
         }
 
         int result = 0, active = 0;
-        for (Map.Entry<Integer, Integer> entry: line.entrySet()) {
-            active += entry.getValue();
+        for (int i = 0; i < line.length; i++) {
+            active += line[i];
             result = Math.max(result, active);
         }
         return result;
