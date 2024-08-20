@@ -1,16 +1,16 @@
 class Solution {
     public int minMeetingRooms(int[][] intervals) {
-        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
-        Arrays.sort(intervals, Comparator.comparing(a -> a[0]));
-
-        minHeap.offer(intervals[0][1]);
-        for (int i = 1; i < intervals.length; i++) {
-            int startTime = intervals[i][0], endTime = intervals[i][1];
-            if (!minHeap.isEmpty() && minHeap.peek() <= startTime) {
-                minHeap.poll();
-            }
-            minHeap.offer(endTime);
+        TreeMap<Integer, Integer> line = new TreeMap<>();
+        for (int[] interval: intervals) {
+            line.put(interval[0], line.getOrDefault(interval[0], 0) + 1);
+            line.put(interval[1], line.getOrDefault(interval[1], 0) - 1);
         }
-        return minHeap.size();
+
+        int result = 0, active = 0;
+        for (Map.Entry<Integer, Integer> entry: line.entrySet()) {
+            active += entry.getValue();
+            result = Math.max(result, active);
+        }
+        return result;
     }
 }
