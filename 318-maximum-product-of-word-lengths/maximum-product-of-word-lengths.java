@@ -1,28 +1,20 @@
 class Solution {
     public int maxProduct(String[] words) {
-        List<Integer> masks = new ArrayList<>();
+        // bitmask -> max length of all strings with same bitmask
+        Map<Integer, Integer> maskMap = new HashMap<>();
         for (String word: words) {
             int mask = 0;
             for (char c: word.toCharArray()) {
                 mask = mask | (1 << (c - 'a'));
             }
-            masks.add(mask);
+            maskMap.put(mask, Math.max(maskMap.getOrDefault(mask, 0), word.length()));
         }
 
-        int result = 0, n = words.length;
-        for (int i = 0; i < n; i++) {
-            for (int j = i + 1; j < n; j++) {
-                int a = masks.get(i), b = masks.get(j);
-                boolean eligible = true;
-                for (int k = 0; k < 26; k++) {
-                    int ak = (a >> k) & 1, bk = (b >> k) & 1;
-                    if (ak + bk == 2) {
-                        eligible = false;
-                        break;
-                    }
-                }
-                if (eligible) {
-                    result = Math.max(result, words[i].length() * words[j].length());
+        int result = 0;
+        for (int x: maskMap.keySet()) {
+            for (int y: maskMap.keySet()) {
+                if ((x & y) == 0) {
+                    result = Math.max(result, maskMap.get(x) * maskMap.get(y));
                 }
             }
         }
