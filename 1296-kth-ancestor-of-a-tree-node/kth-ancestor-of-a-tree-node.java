@@ -28,7 +28,7 @@ class TreeAncestor {
                 if (prevAncestor == -1) {
                     dp[i][j] = -1;
                 } else {
-                    dp[i][j] = dp[dp[i][j - 1]][j - 1];
+                    dp[i][j] = dp[prevAncestor][j - 1];
                 }
             }
         }
