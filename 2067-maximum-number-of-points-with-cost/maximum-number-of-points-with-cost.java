@@ -8,7 +8,7 @@ class Solution {
             previousRow[col] = points[0][col];
         }
 
-        for (int row = 0; row < rows - 1; ++row) {
+        for (int row = 1; row < rows; ++row) {
             long[] leftMax = new long[cols];
             long[] rightMax = new long[cols];
             long[] currentRow = new long[cols];
@@ -24,7 +24,7 @@ class Solution {
             }
 
             for (int col = 0; col < cols; col++) {
-                currentRow[col] = points[row + 1][col] + Math.max(leftMax[col], rightMax[col]);
+                currentRow[col] = points[row][col] + Math.max(leftMax[col], rightMax[col]);
             }
 
             previousRow = currentRow;
