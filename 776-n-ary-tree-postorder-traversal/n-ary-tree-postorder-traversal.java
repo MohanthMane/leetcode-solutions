@@ -28,10 +28,8 @@ class Solution {
 
     private void dfs(Node root) {
         if (root != null) {
-            if (root.children != null) {
-                for (Node child: root.children) {
-                    dfs(child);
-                } 
+            for (Node child: root.children) {
+                dfs(child);
             }
             result.add(root.val);
         }
