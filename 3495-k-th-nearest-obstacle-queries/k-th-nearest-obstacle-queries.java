@@ -1,23 +1,28 @@
 class Solution {
     public int[] resultsArray(int[][] queries, int k) {
-        PriorityQueue<Integer> queue = new PriorityQueue<>(Comparator.comparing(a -> -a));
-        int[] result = new int[queries.length];
+        int n = queries.length;
+
+        int[] results = new int[queries.length];
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> b - a);
+
         for (int i = 0; i < queries.length; i++) {
-            int[] query = queries[i];
-            int dist = Math.abs(query[0]) + Math.abs(query[1]);
-            if (queue.size() < k) {
-                queue.offer(dist);
-            } else if (queue.peek() > dist) {
-                queue.poll();
-                queue.offer(dist);
+            int x = queries[i][0];
+            int y = queries[i][1];
+            int distance = Math.abs(x) + Math.abs(y);
+
+            if (maxHeap.size() < k) {
+                maxHeap.offer(distance);
+            } else if (distance < maxHeap.peek()) {
+                maxHeap.poll();
+                maxHeap.offer(distance);
             }
 
-            if (queue.size() == k) {
-                result[i] = queue.peek();
+            if (maxHeap.size() < k) {
+                results[i] = -1;
             } else {
-                result[i] = -1;
+                results[i] = maxHeap.peek();
             }
         }
-        return result;
+        return results;
     }
 }
