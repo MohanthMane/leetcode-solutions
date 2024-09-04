@@ -5,10 +5,13 @@ class Solution {
         int idx = 0;
         for (int[] query: queries) {
             int dist = Math.abs(query[0]) + Math.abs(query[1]);
-            queue.offer(dist);
-            if (queue.size() > k) {
+            if (queue.size() < k) {
+                queue.offer(dist);
+            } else if (queue.peek() > dist) {
                 queue.poll();
+                queue.offer(dist);
             }
+
             if (queue.size() == k) {
                 result[idx] = queue.peek();
             } else {
