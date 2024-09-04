@@ -2,8 +2,8 @@ class Solution {
     public int[] resultsArray(int[][] queries, int k) {
         PriorityQueue<Integer> queue = new PriorityQueue<>(Comparator.comparing(a -> -a));
         int[] result = new int[queries.length];
-        int idx = 0;
-        for (int[] query: queries) {
+        for (int i = 0; i < queries.length; i++) {
+            int[] query = queries[i];
             int dist = Math.abs(query[0]) + Math.abs(query[1]);
             if (queue.size() < k) {
                 queue.offer(dist);
@@ -13,11 +13,10 @@ class Solution {
             }
 
             if (queue.size() == k) {
-                result[idx] = queue.peek();
+                result[i] = queue.peek();
             } else {
-                result[idx] = -1;
+                result[i] = -1;
             }
-            idx++;
         }
         return result;
     }
